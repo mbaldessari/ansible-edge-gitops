@@ -104,11 +104,12 @@
 
 - name: Create dict with full image name+sha -> image key without sha
   ansible.builtin.set_fact:
-    image_urls: "{{ image_urls | default({}) | combine({item: {'image_nosha': item | regex_replace('@.*$', '')}}, recursive=true) }}"
+    image_urls: "{{ image_urls | default({}) | combine({item: {'image_nosha': item | regex_replace('@.*$', ''), 'image': item}}, recursive=true) }}"
   loop: "{{ all_images }}"
 
 # At this point the dictionary looks as follows:
 # "registry.redhat.io/rhel8/redis-6@sha256:53598a6effeb90e4f1b005b2521beffd2fa2b0c52d0e7f2347ee2abd2577cab3": {
+#   "item": "registry.redhat.io/rhel8/redis-6@sha256:53598a6effeb90e4f1b005b2521beffd2fa2b0c52d0e7f2347ee2abd2577cab3",
 #   "mirrordest": "default-route-openshift-image-registry.apps.mcg-hub.blueprints.rhecoeng.com/openshift-marketplace/redis-6@sha256:535...
 #   "mirrordest_nosha": "default-route-openshift-image-registry.apps.mcg-hub.blueprints.rhecoeng.com/openshift-marketplace/redis-6",
 #   "source": "registry.redhat.io/rhel8/redis-6@sha256:53598a6effeb90e4f1b005b2521beffd2fa2b0c52d0e7f2347ee2abd2577cab3",

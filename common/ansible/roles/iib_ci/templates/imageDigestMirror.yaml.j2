@@ -7,6 +7,7 @@ metadata:
 spec:
   imageDigestMirrors:
 {% for item in image_urls.values() %}
+{% if not item.image.startswith('registry.redhat.io') %}
     - mirrors:
         - {{ item.mirrordest_nosha }}
       source: {{ item.source_nosha }}
@@ -15,4 +16,5 @@ spec:
         - {{ item.mirrordest_nosha }}
       source: {{ item.image_nosha }}
       mirrorSourcePolicy: NeverContactSource
+{% endif %}
 {% endfor %}
